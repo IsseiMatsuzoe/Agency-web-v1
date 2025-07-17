@@ -2,26 +2,82 @@
 @tailwind components;
 @tailwind utilities;
 
+/* デザインシステム ベース設定 */
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  /* Agency ブランドカラー */
+  --agency-red: #e44234;
+  --agency-orange: #ff9a29;
+  --agency-blue: #1679c0;
+
+  /* ニュートラルカラー */
+  --neutral-900: #1d1d1f;
+  --neutral-600: #5f5f60;
+  --neutral-100: #f7f7f7;
+
+  /* フィードバックカラー */
+  --success: #2aa972;
+  --warning: #ffb726;
+  --error: #e02e2e;
+
+  /* スペーシング */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --spacing-xxl: 32px;
+  --spacing-xxxl: 48px;
+  --spacing-mega: 64px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+/* ベース要素のリセット */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  font-family: "SF Pro", "Inter", "Roboto", "Noto Sans JP", sans-serif;
+  color: var(--neutral-900);
+  background: white;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* フォーカス管理 */
+:focus-visible {
+  outline: 2px dashed var(--agency-blue);
+  outline-offset: 2px;
+}
+
+/* アクセシビリティ: reduced motion サポート */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ユーティリティクラス */
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-xl);
+}
+
+.section-padding {
+  padding: var(--spacing-mega) var(--spacing-xxl);
+}
+
+/* トランジション */
+.transition-agency {
+  transition: all 150ms ease-out;
 }

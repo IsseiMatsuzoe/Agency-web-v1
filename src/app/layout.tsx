@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export const metadata: Metadata = {
-  title: "会社名 - 企業ウェブサイト",
+  title: "Agency - 誠実で親しみやすいデジタルソリューション",
   description:
-    "会社の公式ウェブサイトです。サービスや企業情報をご覧いただけます。",
+    "株式会社Agencyのコーポレートサイト。信頼性と親しみやすさを両立したデジタルソリューションを提供します。",
+  keywords: ["Agency", "デジタル", "企業", "ソリューション"],
+  openGraph: {
+    title: "Agency - 誠実で親しみやすいデジタルソリューション",
+    description:
+      "株式会社Agencyのコーポレートサイト。信頼性と親しみやすさを両立したデジタルソリューションを提供します。",
+    locale: "ja_JP",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -17,7 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body className={inter.className}>{children}</body>
+      <body className="font-primary text-neutral-900 bg-white">{children}</body>
     </html>
   );
 }
