@@ -1,0 +1,164 @@
+# Agency Design System - Accessibility Principles
+# AI Agent Reference: WCAG 2.2 compliance requirements
+
+compliance-level: "WCAG 2.2 AA"
+target-aaa: "Where feasible"
+
+# Color & Contrast
+color:
+  contrast-ratios:
+    normal-text: 4.5 # AA requirement
+    large-text: 3.0 # AA requirement (18pt+ or 14pt+ bold)
+    aaa-normal: 7.0 # AAA target
+    aaa-large: 4.5 # AAA target
+
+  accessibility-tests:
+    - "Test all text/background combinations"
+    - "Verify in grayscale"
+    - "Check with color blindness simulators"
+
+  color-dependence:
+    rule: "Never use color alone to convey information"
+    solutions: ["icons", "text labels", "patterns", "underlines"]
+
+# Typography & Readability
+typography:
+  font-size:
+    minimum: 16 # px for body text
+    scalability: "Support 200% zoom without horizontal scroll"
+
+  line-height:
+    minimum: 1.5 # for body text
+    headings: 1.3 # minimum for headings
+
+  character-limits:
+    max-line-length: 80 # characters for optimal reading
+
+  font-choices:
+    avoid: ["decorative fonts for body text", "low contrast fonts"]
+    prefer: ["system fonts", "proven web fonts"]
+
+# Interactive Elements
+interactive:
+  touch-targets:
+    minimum-size: 44 # px (Apple/WCAG standard)
+    spacing: 8 # px between targets
+
+  keyboard-navigation:
+    requirements:
+      - "All interactive elements must be keyboard accessible"
+      - "Logical tab order"
+      - "Visible focus indicators"
+      - "Skip links for main content"
+
+  focus-indicators:
+    style: "2px solid agency-blue"
+    offset: 2 # px
+    never-remove: true
+
+# Content Structure
+content:
+  headings:
+    hierarchy: "Use h1-h6 in logical order"
+    skip-levels: false # Don't skip heading levels
+
+  landmarks:
+    required: ["main", "nav", "header", "footer"]
+    regions: "Use ARIA landmarks for complex layouts"
+
+  lists:
+    usage: "Use proper list markup for related items"
+
+  links:
+    descriptive: "Link text must describe destination"
+    avoid: ["click here", "read more", "learn more"]
+
+# Images & Media
+media:
+  alt-text:
+    decorative: 'alt=""' # Empty alt for decorative images
+    informative: "Describe image function/content"
+    complex: "Provide detailed description"
+
+  icons:
+    accessibility: "aria-label or sr-only text"
+    decorative: 'aria-hidden="true"'
+
+# Forms
+forms:
+  labels:
+    requirement: "Every input must have a label"
+    association: "Use for/id or aria-labelledby"
+
+  error-handling:
+    identification: "Clearly identify errors"
+    description: "Explain how to fix errors"
+    inline-validation: "Provide immediate feedback"
+
+  required-fields:
+    indication: "Mark required fields clearly"
+    methods: ["asterisk + legend", "aria-required"]
+
+# Motion & Animation
+motion:
+  respect-preferences: "prefers-reduced-motion: reduce"
+  alternatives: "Provide static alternatives"
+
+  safe-animations:
+    duration: "≤300ms for UI feedback"
+    parallax: "≤20px movement"
+
+  avoid:
+    - "Flashing content (>3 Hz)"
+    - "Auto-playing videos with sound"
+    - "Infinite scrolling without pause"
+
+# Testing Requirements
+testing:
+  automated-tools:
+    - "axe-core"
+    - "WAVE"
+    - "Lighthouse accessibility audit"
+
+  manual-testing:
+    - "Keyboard-only navigation"
+    - "Screen reader testing (NVDA/JAWS/VoiceOver)"
+    - "High contrast mode"
+    - "200% zoom test"
+
+  user-testing:
+    frequency: "Include users with disabilities in testing"
+
+# AI Implementation Checklist
+ai-checklist:
+  always-include:
+    - "semantic HTML structure"
+    - "proper heading hierarchy"
+    - "alt text for images"
+    - "keyboard navigation support"
+    - "focus management"
+    - "color contrast verification"
+    - "responsive text sizing"
+
+  never-forget:
+    - "aria-labels for icons"
+    - "form field labels"
+    - "error state descriptions"
+    - "loading state announcements"
+
+# Performance & Accessibility
+performance:
+  relationship: "Slow sites are inaccessible sites"
+  targets:
+    - "LCP <2.5s"
+    - "CLS <0.1"
+    - "FID <100ms"
+
+# Emergency Accessibility Fixes
+quick-wins:
+  - "Add alt text to images"
+  - "Increase font sizes"
+  - "Improve color contrast"
+  - "Add focus indicators"
+  - "Fix heading hierarchy"
+  - "Label form inputs"

@@ -1,0 +1,402 @@
+COMPONENT_SPEC_VERSION: "1.0"
+AI_IMPLEMENTATION_CONTEXT: "react_typescript_tailwind"
+
+# Core component library for Agency website
+components:
+  # Layout Components
+  Header:
+    type: "layout"
+    file_path: "src/components/Header.tsx"
+    description: "Main navigation header with responsive mobile menu"
+
+    props:
+      navigation_items:
+        type: "array<NavigationItem>"
+        required: true
+        default:
+          [
+            { label: "ホーム", href: "/", active: false },
+            { label: "About", href: "/about", active: false },
+            { label: "News", href: "/news", active: false },
+            { label: "Contact", href: "/contact", active: false },
+          ]
+
+    styling:
+      container: "sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200"
+      nav: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+      logo: "text-2xl font-bold text-[#E44234]"
+      menu_items: "text-gray-900 hover:text-[#1679C0] transition-colors"
+      mobile_button: "md:hidden p-2 rounded-lg hover:bg-gray-100"
+
+    behavior:
+      mobile_menu: "collapsible"
+      scroll_behavior: "sticky_header"
+      active_state: "highlight_current_page"
+
+    accessibility:
+      landmarks: ["banner", "navigation"]
+      keyboard_navigation: true
+      mobile_menu_aria: "expanded/collapsed"
+      focus_management: true
+
+  Footer:
+    type: "layout"
+    file_path: "src/components/Footer.tsx"
+    description: "Site footer with company info and links"
+
+    props:
+      company_info:
+        type: "CompanyMeta"
+        required: true
+      social_links:
+        type: "array<SocialLink>"
+        required: false
+
+    styling:
+      container: "bg-gray-900 text-white py-12"
+      content: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+      copyright: "text-gray-400 text-sm"
+
+    accessibility:
+      landmark: "contentinfo"
+      focus_visible: true
+
+  # Hero Section Components
+  HeroSection:
+    type: "content"
+    file_path: "src/components/Hero.tsx"
+    description: "Main hero section with CTA"
+
+    props:
+      title:
+        type: "string"
+        required: true
+        max_length: 60
+      subtitle:
+        type: "string"
+        required: true
+        max_length: 120
+      cta_text:
+        type: "string"
+        required: true
+        max_length: 30
+      cta_link:
+        type: "string"
+        required: true
+        format: "url_or_path"
+      background_image:
+        type: "string"
+        required: false
+        format: "image_url"
+
+    styling:
+      container: "relative min-h-screen flex items-center justify-center bg-gradient-to-br from-[#E44234] to-[#FF9A29]"
+      title: "text-4xl md:text-6xl font-bold text-white mb-6"
+      subtitle: "text-xl md:text-2xl text-white/90 mb-8 max-w-2xl"
+      cta_button: "bg-white text-[#E44234] px-8 py-4 rounded-lg font-semibold hover:shadow-lg transition-all min-h-[44px]"
+
+    behavior:
+      scroll_indicator: true
+      parallax_background: false
+      typing_animation: false
+
+    accessibility:
+      h1_heading: true
+      landmark: "banner"
+      color_contrast: "4.5:1"
+      focus_visible: true
+
+  # Content Sections
+  MissionSection:
+    type: "content"
+    file_path: "src/components/sections/MissionSection.tsx"
+    description: "Company mission display with rich text support"
+
+    props:
+      mission_text:
+        type: "rich_text"
+        required: true
+        source: "firestore:company_meta"
+
+    styling:
+      container: "py-16 bg-gray-50"
+      content: "max-w-4xl mx-auto px-4 text-center"
+      text: "text-lg leading-relaxed text-gray-900"
+
+    accessibility:
+      h2_heading: true
+      landmark: "main"
+
+  MembersPreview:
+    type: "content"
+    file_path: "src/components/sections/MembersPreview.tsx"
+    description: "Preview of top 3 team members"
+
+    props:
+      members:
+        type: "array<Member>"
+        required: true
+        max_items: 3
+
+    styling:
+      container: "py-16"
+      grid: "grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto px-4"
+      card: "bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-shadow"
+      image: "w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+      name: "text-xl font-semibold text-gray-900 text-center"
+      role: "text-[#1679C0] text-center mb-3"
+
+    accessibility:
+      h2_heading: true
+      card_grid: true
+      landmark: "region"
+
+  NewsPreview:
+    type: "content"
+    file_path: "src/components/sections/NewsPreview.tsx"
+    description: "Preview of latest 3 news items"
+
+    props:
+      news_items:
+        type: "array<NewsItem>"
+        required: true
+        max_items: 3
+
+    styling:
+      container: "py-16 bg-gray-50"
+      grid: "grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto px-4"
+      card: "bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow"
+      image: "w-full h-48 object-cover"
+      title: "text-lg font-semibold text-gray-900 p-4"
+      date: "text-sm text-gray-500 px-4 pb-4"
+
+    accessibility:
+      h2_heading: true
+      card_grid: true
+      landmark: "region"
+
+  # Form Components
+  ContactForm:
+    type: "form"
+    file_path: "src/components/forms/ContactForm.tsx"
+    description: "Main contact form with validation"
+
+    props:
+      onSubmit:
+        type: "function"
+        required: true
+        signature: "(data: ContactFormData) => Promise<void>"
+
+    form_fields:
+      name:
+        component: "TextInput"
+        validation: ["required", "min_length:1", "max_length:100"]
+        accessibility:
+          label: "お名前"
+          required: true
+
+      email:
+        component: "EmailInput"
+        validation: ["email_format", "conditional_required"]
+        accessibility:
+          label: "メールアドレス"
+          description: "電話番号またはメールアドレスのいずれかは必須"
+
+      phone:
+        component: "TelInput"
+        validation: ["phone_format", "conditional_required"]
+        accessibility:
+          label: "電話番号"
+          description: "電話番号またはメールアドレスのいずれかは必須"
+
+      message:
+        component: "TextareaInput"
+        validation: ["required", "min_length:10", "max_length:1000"]
+        accessibility:
+          label: "お問い合わせ内容"
+          required: true
+          character_count: true
+
+    styling:
+      container: "max-w-2xl mx-auto p-6"
+      field_group: "mb-6"
+      label: "block text-sm font-medium text-gray-900 mb-2"
+      input: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1679C0] focus:border-transparent"
+      submit_button: "w-full bg-[#E44234] text-white py-3 rounded-lg font-semibold hover:bg-[#FF9A29] transition-colors min-h-[44px]"
+      error_message: "text-red-600 text-sm mt-1"
+
+    behavior:
+      client_validation: true
+      server_validation: true
+      submission_states: ["idle", "submitting", "success", "error"]
+      auto_save: false
+
+    accessibility:
+      form_landmark: true
+      error_announcements: true
+      success_announcements: true
+      keyboard_navigation: true
+      required_indicators: true
+
+  # UI Components
+  Button:
+    type: "ui"
+    file_path: "src/components/ui/Button.tsx"
+    description: "Reusable button component with variants"
+
+    props:
+      variant:
+        type: "enum"
+        options: ["primary", "secondary", "outline", "ghost"]
+        default: "primary"
+      size:
+        type: "enum"
+        options: ["sm", "md", "lg"]
+        default: "md"
+      disabled:
+        type: "boolean"
+        default: false
+      children:
+        type: "ReactNode"
+        required: true
+
+    styling:
+      base: "inline-flex items-center justify-center font-semibold rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2"
+      primary: "bg-[#E44234] text-white hover:bg-[#FF9A29] focus:ring-[#E44234]"
+      secondary: "bg-[#1679C0] text-white hover:bg-blue-700 focus:ring-[#1679C0]"
+      outline: "border-2 border-[#1679C0] text-[#1679C0] hover:bg-[#1679C0] hover:text-white focus:ring-[#1679C0]"
+      sizes:
+        sm: "px-4 py-2 text-sm min-h-[36px]"
+        md: "px-6 py-3 text-base min-h-[44px]"
+        lg: "px-8 py-4 text-lg min-h-[52px]"
+
+    accessibility:
+      min_touch_target: "44px"
+      focus_visible: true
+      keyboard_activation: true
+
+  Card:
+    type: "ui"
+    file_path: "src/components/ui/Card.tsx"
+    description: "Reusable card component with hover effects"
+
+    props:
+      hoverable:
+        type: "boolean"
+        default: true
+      padding:
+        type: "enum"
+        options: ["sm", "md", "lg"]
+        default: "md"
+      children:
+        type: "ReactNode"
+        required: true
+
+    styling:
+      base: "bg-white rounded-2xl shadow-sm border border-gray-200"
+      hoverable: "hover:shadow-lg hover:-translate-y-1 transition-all duration-200"
+      padding:
+        sm: "p-4"
+        md: "p-6"
+        lg: "p-8"
+
+    accessibility:
+      focusable: "when_interactive"
+      keyboard_activation: "when_clickable"
+
+  LoadingSpinner:
+    type: "ui"
+    file_path: "src/components/ui/LoadingSpinner.tsx"
+    description: "Loading indicator with accessibility support"
+
+    props:
+      size:
+        type: "enum"
+        options: ["sm", "md", "lg"]
+        default: "md"
+      color:
+        type: "string"
+        default: "#E44234"
+
+    styling:
+      base: "animate-spin rounded-full border-2 border-gray-200"
+      accent: "border-t-current"
+      sizes:
+        sm: "w-4 h-4"
+        md: "w-8 h-8"
+        lg: "w-12 h-12"
+
+    accessibility:
+      aria_label: "読み込み中"
+      role: "status"
+      live_region: true
+
+# Component composition patterns
+patterns:
+  page_layout:
+    structure: ["Header", "main_content", "Footer"]
+    accessibility: ["skip_link", "landmark_navigation"]
+
+  card_grid:
+    responsive: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+    accessibility: ["heading_hierarchy", "keyboard_navigation"]
+
+  form_layout:
+    structure: ["field_groups", "submit_section"]
+    validation: ["client_side", "server_side", "accessibility_announcements"]
+
+# Global styling tokens (references design-system)
+design_tokens:
+  colors:
+    primary: "#E44234"
+    secondary: "#FF9A29"
+    accent: "#1679C0"
+    gray_50: "#F9FAFB"
+    gray_900: "#111827"
+
+  spacing:
+    base_unit: "4px"
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96, 128]
+
+  typography:
+    font_family:
+      heading: "Feather Bold"
+      body: "SF Pro Display"
+
+    sizes:
+      xs: "0.75rem"
+      sm: "0.875rem"
+      base: "1rem"
+      lg: "1.125rem"
+      xl: "1.25rem"
+      "2xl": "1.5rem"
+      "4xl": "2.25rem"
+      "6xl": "3.75rem"
+
+  shadows:
+    sm: "0 1px 2px 0 rgb(0 0 0 / 0.05)"
+    DEFAULT: "0 1px 3px 0 rgb(0 0 0 / 0.1)"
+    lg: "0 10px 15px -3px rgb(0 0 0 / 0.1)"
+
+  transitions:
+    default: "all 150ms ease-in-out"
+    colors: "color 150ms ease-in-out"
+    shadow: "box-shadow 200ms ease-in-out"
+
+# Performance optimization guidelines
+performance:
+  image_optimization:
+    - use_next_image: true
+    - lazy_loading: true
+    - responsive_images: true
+    - webp_format: true
+
+  code_splitting:
+    - dynamic_imports: true
+    - route_based_splitting: true
+    - component_lazy_loading: true
+
+  css_optimization:
+    - tailwind_purging: true
+    - critical_css: true
+    - unused_css_removal: true

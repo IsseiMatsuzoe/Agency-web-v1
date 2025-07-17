@@ -1,0 +1,91 @@
+# Agency Design System - Layout & Spacing Tokens
+# AI Agent Reference: Grid systems, spacing scale, responsive breakpoints
+
+# Spacing Scale (4px base unit)
+spacing:
+  base-unit: 4 # px
+  scale:
+    xs: 4 # 1 unit
+    sm: 8 # 2 units
+    md: 12 # 3 units
+    lg: 16 # 4 units
+    xl: 24 # 6 units
+    xxl: 32 # 8 units
+    xxxl: 48 # 12 units
+    mega: 64 # 16 units
+
+# Responsive Grid System
+grid:
+  mobile:
+    columns: 4
+    gutter: 16 # px
+    margin: 16 # px
+    max-width: 390 # px (target viewport)
+
+  tablet:
+    columns: 8
+    gutter: 24
+    margin: 24
+    min-width: 768
+    max-width: 1024
+
+  desktop:
+    columns: 12
+    gutter: 32
+    margin: 32
+    min-width: 1025
+    max-width: 1440
+
+# Safe Areas (Apple HIG compliance)
+safe-areas:
+  respect-system: true
+  minimum-touch-target: 44 # px (minimum for accessibility)
+  content-margins: "Use system-defined safe areas"
+
+# Component Spacing Standards
+component-spacing:
+  section-vertical: 64 # Between major sections
+  section-horizontal: 32 # Section internal padding
+  card-internal: 24 # Inside cards/containers
+  element-gap: 16 # Between related elements
+  tight-gap: 8 # Between tightly related items
+
+# Border Radius Scale
+radius:
+  xs: 4 # Small elements, badges
+  sm: 8 # Buttons, form inputs
+  md: 12 # Cards, modals
+  lg: 16 # Large containers
+  xl: 24 # Hero sections
+  round: 9999 # Fully rounded (pills, avatars)
+
+# Elevation/Shadow System
+elevation:
+  none: "none"
+  card: "0 1px 3px rgba(0,0,0,0.08)"
+  hover: "0 4px 16px rgba(0,0,0,0.12)"
+  modal: "0 8px 32px rgba(0,0,0,0.16)"
+  tooltip: "0 2px 8px rgba(0,0,0,0.1)"
+
+# Layout Patterns for AI
+patterns:
+  hero-section:
+    height: "min(100vh, 600px)"
+    content-width: "90%"
+    max-content-width: "1200px"
+
+  content-section:
+    max-width: "1440px"
+    padding: "section-vertical section-horizontal"
+
+  card-grid:
+    gap: "lg"
+    mobile-columns: 1
+    tablet-columns: 2
+    desktop-columns: 3
+
+# Performance Targets
+performance:
+  mobile-lcp: "sub-2s" # Largest Contentful Paint
+  target-viewport: "390px" # Primary mobile optimization
+  fluid-scaling: true # Use clamp() for responsive scaling

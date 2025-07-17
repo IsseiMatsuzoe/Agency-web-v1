@@ -1,0 +1,117 @@
+# Agency Design System - Navigation Component
+# AI Agent Reference: Header navigation specifications
+
+component: navigation
+type: layout
+
+# Header Navigation
+header:
+  height: 64 # px
+  background: "rgba(255,255,255,0.95)"
+  backdrop-filter: "blur(20px)"
+  position: "sticky"
+  top: 0
+  z-index: 1000
+
+  layout:
+    max-width: "1440px"
+    margin: "0 auto"
+    padding: "0 32px"
+    display: "flex"
+    align-items: "center"
+    justify-content: "space-between"
+
+# Logo/Brand Area
+brand:
+  font: "rounded"
+  size: 20
+  weight: 700
+  color: "agency-blue"
+  hover-color: "agency-red"
+  max-width: "200px"
+
+# Navigation Items
+nav-items:
+  max-count: 5 # Maximum recommended items
+  spacing: 32 # px between items
+
+  default-state:
+    font: "primary"
+    size: 16
+    weight: 500
+    color: "neutral-900"
+    text-decoration: "none"
+
+  hover-state:
+    color: "agency-red"
+    transition: "color 150ms ease-out"
+
+  active-state:
+    color: "agency-blue"
+    font-weight: 600
+
+# Mobile Menu
+mobile:
+  breakpoint: 768 # px - switch to mobile menu
+  trigger:
+    size: 24 # px icon size
+    color: "neutral-900"
+    hover-color: "agency-red"
+
+  menu:
+    background: "white"
+    padding: "24px"
+    border-top: "1px solid neutral-100"
+
+  items:
+    display: "flex"
+    flex-direction: "column"
+    gap: 24
+    font-size: 18
+
+# Responsive Behavior
+responsive:
+  desktop:
+    show: ["brand", "nav-items", "cta-button"]
+    hide: ["mobile-trigger"]
+
+  tablet:
+    show: ["brand", "nav-items"]
+    hide: ["mobile-trigger"]
+    spacing: 24
+
+  mobile:
+    show: ["brand", "mobile-trigger"]
+    hide: ["nav-items"]
+
+# CTA Button in Nav
+cta-button:
+  variant: "primary"
+  size: "sm"
+  text: "お問い合わせ"
+  margin-left: 24
+
+# Accessibility
+accessibility:
+  aria-label: "Main navigation"
+  keyboard-support: ["Tab", "Enter", "Escape"]
+  mobile-menu-aria: "Navigation menu"
+  focus-management: "Trap focus in mobile menu"
+
+# Content Guidelines
+content:
+  item-labels:
+    max-length: 12 # characters
+    style: "Clear, descriptive"
+    examples: ["ホーム", "会社概要", "サービス", "お問い合わせ"]
+
+  hierarchy:
+    primary: ["ホーム", "サービス", "お問い合わせ"]
+    secondary: ["会社概要", "実績", "ブログ"]
+
+# Implementation Notes
+implementation:
+  sticky-behavior: "Hide on scroll down, show on scroll up"
+  smooth-scroll: "Enable for anchor links"
+  active-detection: "Highlight current page"
+  mobile-optimization: "Touch-friendly targets (44px min)"

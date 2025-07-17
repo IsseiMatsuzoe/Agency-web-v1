@@ -1,0 +1,453 @@
+IMPLEMENTATION_GUIDE_VERSION: "1.0"
+AI_EXECUTION_CONTEXT: "step_by_step_implementation"
+
+# Implementation phases with detailed steps
+implementation_phases:
+  
+  phase_1_project_setup:
+    priority: "critical"
+    estimated_duration: "2_hours"
+    dependencies: []
+    
+    tasks:
+      setup_nextjs_project:
+        command: "npx create-next-app@latest agency-web --typescript --tailwind --eslint --app --src-dir --import-alias '@/*'"
+        validation:
+          - file_exists: "package.json"
+          - file_exists: "next.config.js"
+          - file_exists: "tailwind.config.ts"
+          - file_exists: "src/app/layout.tsx"
+      
+      install_dependencies:
+        commands:
+          - "npm install firebase firecms react-hook-form @headlessui/react @heroicons/react"
+          - "npm install -D @types/node"
+        validation:
+          - package_installed: "firebase"
+          - package_installed: "firecms"
+          - package_installed: "react-hook-form"
+      
+      configure_firebase:
+        files_to_create:
+          - path: "src/lib/firebase.ts"
+            template: "firebase_config_template"
+          - path: "firebase.json"
+            template: "hosting_config_template"
+          - path: "firestore.rules"
+            template: "firestore_rules_template"
+        validation:
+          - file_exists: "src/lib/firebase.ts"
+          - file_exists: "firebase.json"
+          - firebase_project_initialized: true
+      
+      setup_environment:
+        files_to_create:
+          - path: ".env.local"
+            template: "env_template"
+          - path: ".env.example"
+            template: "env_example_template"
+        validation:
+          - file_exists: ".env.local"
+          - env_vars_configured: ["NEXT_PUBLIC_FIREBASE_API_KEY", "NEXT_PUBLIC_FIREBASE_PROJECT_ID"]
+
+  phase_2_core_components:
+    priority: "critical"
+    estimated_duration: "4_hours"
+    dependencies: ["phase_1_project_setup"]
+    
+    tasks:
+      create_layout_components:
+        components_to_create:
+          - component: "Header"
+            path: "src/components/Header.tsx"
+            dependencies: ["@headlessui/react", "@heroicons/react"]
+            validation:
+              - mobile_menu_functional: true
+              - navigation_links_working: true
+              - accessibility_compliant: true
+          
+          - component: "Footer"
+            path: "src/components/Footer.tsx"
+            validation:
+              - company_info_displayed: true
+              - links_functional: true
+              - responsive_design: true
+      
+      create_ui_components:
+        components_to_create:
+          - component: "Button"
+            path: "src/components/ui/Button.tsx"
+            props: ["variant", "size", "disabled", "children"]
+            validation:
+              - all_variants_working: ["primary", "secondary", "outline"]
+              - accessibility_compliant: true
+              - min_touch_target_44px: true
+          
+          - component: "Card"
+            path: "src/components/ui/Card.tsx"
+            props: ["hoverable", "padding", "children"]
+            validation:
+              - hover_effects_working: true
+              - responsive_padding: true
+          
+          - component: "LoadingSpinner"
+            path: "src/components/ui/LoadingSpinner.tsx"
+            props: ["size", "color"]
+            validation:
+              - animation_smooth: true
+              - accessibility_labels: true
+      
+      create_form_components:
+        components_to_create:
+          - component: "ContactForm"
+            path: "src/components/forms/ContactForm.tsx"
+            dependencies: ["react-hook-form"]
+            validation:
+              - client_validation_working: true
+              - conditional_required_fields: true
+              - error_handling_accessible: true
+              - form_submission_functional: true
+
+  phase_3_page_implementation:
+    priority: "critical"
+    estimated_duration: "6_hours"
+    dependencies: ["phase_2_core_components"]
+    
+    tasks:
+      create_home_page:
+        files_to_create:
+          - path: "src/app/page.tsx"
+            sections: ["hero", "mission", "members_preview", "news_preview", "cta_footer"]
+            validation:
+              - all_sections_rendered: true
+              - responsive_layout: true
+              - data_loading_functional: true
+              - seo_metadata_correct: true
+      
+      create_about_page:
+        files_to_create:
+          - path: "src/app/about/page.tsx"
+            sections: ["full_members", "company_facts"]
+            validation:
+              - members_grid_sortable: true
+              - company_info_displayed: true
+              - responsive_layout: true
+      
+      create_news_pages:
+        files_to_create:
+          - path: "src/app/news/page.tsx"
+            features: ["pagination", "filtering", "search"]
+            validation:
+              - news_list_functional: true
+              - pagination_working: true
+              - tag_filtering_working: true
+          
+          - path: "src/app/news/[slug]/page.tsx"
+            features: ["markdown_rendering", "social_sharing", "related_articles"]
+            validation:
+              - markdown_rendered_correctly: true
+              - dynamic_routing_working: true
+              - related_articles_displayed: true
+      
+      create_contact_page:
+        files_to_create:
+          - path: "src/app/contact/page.tsx"
+            validation:
+              - contact_form_embedded: true
+              - form_submission_working: true
+              - success_error_states: true
+
+  phase_4_cms_integration:
+    priority: "high"
+    estimated_duration: "4_hours"
+    dependencies: ["phase_3_page_implementation"]
+    
+    tasks:
+      setup_firecms:
+        files_to_create:
+          - path: "src/app/admin/[[...path]]/page.tsx"
+            template: "firecms_integration_template"
+          - path: "src/lib/cms-config.ts"
+            template: "cms_collections_config"
+        validation:
+          - admin_panel_accessible: "/admin"
+          - collections_configured: ["members", "news", "company_meta", "inquiries"]
+          - authentication_working: true
+      
+      configure_collections:
+        collections_to_setup:
+          - members
+          - news
+          - company_meta
+          - inquiries
+        validation:
+          - crud_operations_working: true
+          - field_validation_working: true
+          - image_uploads_working: true
+          - permissions_enforced: true
+      
+      setup_authentication:
+        files_to_create:
+          - path: "src/lib/auth.ts"
+            template: "auth_helper_template"
+        validation:
+          - admin_login_working: true
+          - role_based_access: true
+          - session_management: true
+
+  phase_5_firebase_functions:
+    priority: "medium"
+    estimated_duration: "3_hours"
+    dependencies: ["phase_4_cms_integration"]
+    
+    tasks:
+      setup_functions_project:
+        command: "firebase init functions"
+        validation:
+          - functions_folder_created: true
+          - package_json_functions: true
+      
+      create_contact_form_function:
+        files_to_create:
+          - path: "functions/src/contact-form.ts"
+            template: "contact_form_function_template"
+        validation:
+          - function_deployed: true
+          - email_sending_working: true
+          - firestore_write_working: true
+      
+      create_utility_functions:
+        functions_to_create:
+          - generate_news_slug
+          - send_inquiry_notification
+          - optimize_uploaded_images
+        validation:
+          - all_functions_deployed: true
+          - triggers_working: true
+
+  phase_6_styling_optimization:
+    priority: "medium"
+    estimated_duration: "3_hours"
+    dependencies: ["phase_3_page_implementation"]
+    
+    tasks:
+      implement_design_tokens:
+        files_to_update:
+          - path: "tailwind.config.ts"
+            updates: ["brand_colors", "typography", "spacing", "shadows"]
+        validation:
+          - brand_colors_applied: true
+          - typography_consistent: true
+          - spacing_scale_used: true
+      
+      responsive_optimization:
+        breakpoints_to_test: ["390px", "768px", "1024px", "1280px"]
+        validation:
+          - mobile_first_design: true
+          - touch_targets_44px: true
+          - readable_typography: true
+          - proper_spacing: true
+      
+      accessibility_audit:
+        checks_to_perform:
+          - color_contrast_4_5_1: true
+          - keyboard_navigation: true
+          - screen_reader_support: true
+          - focus_indicators: true
+          - semantic_html: true
+        validation:
+          - wcag_aa_compliant: true
+          - lighthouse_accessibility_90plus: true
+
+  phase_7_performance_optimization:
+    priority: "medium"
+    estimated_duration: "2_hours"
+    dependencies: ["phase_6_styling_optimization"]
+    
+    tasks:
+      optimize_images:
+        files_to_update:
+          - "Replace all img tags with Next.js Image component"
+          - "Implement lazy loading"
+          - "Add responsive image sizing"
+        validation:
+          - next_image_used: true
+          - lazy_loading_working: true
+          - webp_format_served: true
+      
+      code_splitting:
+        optimizations:
+          - dynamic_imports_for_heavy_components: true
+          - route_based_splitting: true
+          - vendor_bundle_optimization: true
+        validation:
+          - bundle_size_optimized: true
+          - first_load_js_under_250kb: true
+      
+      performance_audit:
+        metrics_to_achieve:
+          - lcp_under_2500ms: true
+          - cls_under_0_1: true
+          - fid_under_100ms: true
+        validation:
+          - lighthouse_performance_90plus: true
+          - core_web_vitals_passing: true
+
+  phase_8_deployment_setup:
+    priority: "high"
+    estimated_duration: "2_hours"
+    dependencies: ["phase_7_performance_optimization"]
+    
+    tasks:
+      configure_firebase_hosting:
+        files_to_update:
+          - path: "firebase.json"
+            config: "hosting_configuration"
+          - path: "next.config.js"
+            config: "static_export_configuration"
+        validation:
+          - static_export_working: true
+          - hosting_configured: true
+          - redirects_working: true
+      
+      setup_ci_cd:
+        files_to_create:
+          - path: ".github/workflows/deploy.yml"
+            template: "github_actions_template"
+        validation:
+          - auto_deployment_working: true
+          - preview_channels_working: true
+          - build_tests_passing: true
+      
+      domain_configuration:
+        tasks:
+          - configure_custom_domain: "agency.co.jp"
+          - setup_ssl_certificate: true
+          - configure_dns_records: true
+        validation:
+          - custom_domain_working: true
+          - ssl_certificate_valid: true
+          - redirect_www_to_apex: true
+
+# Validation criteria for each phase
+validation_checklist:
+  functionality:
+    - all_pages_accessible: true
+    - navigation_working: true
+    - forms_submitting: true
+    - cms_operational: true
+    - search_functional: true
+  
+  performance:
+    - lighthouse_score_above_90: true
+    - core_web_vitals_passing: true
+    - mobile_page_speed_good: true
+    - first_contentful_paint_under_2s: true
+  
+  accessibility:
+    - wcag_aa_compliant: true
+    - keyboard_navigation_complete: true
+    - screen_reader_compatible: true
+    - color_contrast_sufficient: true
+    - focus_indicators_visible: true
+  
+  seo:
+    - meta_tags_complete: true
+    - structured_data_implemented: true
+    - sitemap_generated: true
+    - robots_txt_configured: true
+    - open_graph_tags_present: true
+  
+  security:
+    - firebase_rules_configured: true
+    - input_validation_implemented: true
+    - rate_limiting_active: true
+    - csrf_protection_enabled: true
+    - secure_headers_configured: true
+
+# Error handling and troubleshooting
+troubleshooting_guide:
+  common_issues:
+    firebase_connection_failed:
+      symptoms: ["Firebase config errors", "Authentication not working"]
+      solutions:
+        - "Check .env.local file configuration"
+        - "Verify Firebase project settings"
+        - "Ensure API keys are correct"
+    
+    build_failures:
+      symptoms: ["Next.js build errors", "TypeScript errors"]
+      solutions:
+        - "Check import paths"
+        - "Verify component prop types"
+        - "Run 'npm run type-check'"
+    
+    styling_issues:
+      symptoms: ["Tailwind classes not working", "Responsive issues"]
+      solutions:
+        - "Check tailwind.config.ts"
+        - "Verify component class names"
+        - "Test on multiple viewport sizes"
+    
+    performance_problems:
+      symptoms: ["Slow loading", "Large bundle size"]
+      solutions:
+        - "Implement code splitting"
+        - "Optimize images"
+        - "Remove unused dependencies"
+
+# Quality assurance checklist
+qa_checklist:
+  pre_deployment:
+    - [ ] All pages load without errors
+    - [ ] Forms submit successfully
+    - [ ] Mobile responsiveness verified
+    - [ ] Admin panel functional
+    - [ ] SEO metadata complete
+    - [ ] Accessibility standards met
+    - [ ] Performance benchmarks achieved
+    - [ ] Browser compatibility confirmed
+    - [ ] Error handling working
+    - [ ] Loading states implemented
+  
+  post_deployment:
+    - [ ] Live site accessible
+    - [ ] SSL certificate working
+    - [ ] Contact form emails sent
+    - [ ] Admin login functional
+    - [ ] Content updates working
+    - [ ] Search engines can crawl
+    - [ ] Analytics tracking active
+    - [ ] Error monitoring enabled
+    - [ ] Backup systems operational
+    - [ ] Performance monitoring active
+
+# Success metrics
+success_criteria:
+  technical:
+    lighthouse_scores:
+      performance: ">= 90"
+      accessibility: ">= 95"
+      best_practices: ">= 90"
+      seo: ">= 95"
+    
+    load_times:
+      first_contentful_paint: "<= 1.5s"
+      largest_contentful_paint: "<= 2.5s"
+      cumulative_layout_shift: "<= 0.1"
+      first_input_delay: "<= 100ms"
+  
+  functional:
+    - all_routes_accessible: true
+    - forms_validation_working: true
+    - cms_crud_operations: true
+    - email_notifications: true
+    - image_uploads: true
+    - search_functionality: true
+  
+  business:
+    - brand_guidelines_followed: true
+    - content_management_easy: true
+    - mobile_user_experience: true
+    - admin_workflow_efficient: true
+    - maintenance_sustainable: true 

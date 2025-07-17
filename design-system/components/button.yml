@@ -1,0 +1,101 @@
+# Agency Design System - Button Component
+# AI Agent Reference: Complete button specifications
+
+component: button
+type: interactive
+
+# Variants
+variants:
+  primary:
+    background: "agency-red"
+    text-color: "white"
+    border: "none"
+    usage: "Main CTAs, primary actions"
+
+  secondary:
+    background: "transparent"
+    text-color: "agency-blue"
+    border: "2px solid agency-blue"
+    usage: "Secondary actions, ghost buttons"
+
+  tertiary:
+    background: "transparent"
+    text-color: "agency-red"
+    border: "none"
+    usage: "Text links, minimal actions"
+
+# Sizes
+sizes:
+  sm:
+    padding: "8px 16px"
+    font-size: 14
+    min-height: 36
+
+  md:
+    padding: "12px 24px"
+    font-size: 16
+    min-height: 44
+
+  lg:
+    padding: "16px 32px"
+    font-size: 20
+    min-height: 52
+
+# States
+states:
+  default:
+    opacity: 1
+    transform: "scale(1)"
+
+  hover:
+    primary:
+      background: "agency-orange"
+      elevation: "hover"
+      transform: "scale(1.02)"
+    secondary:
+      background: "agency-blue"
+      text-color: "white"
+    tertiary:
+      text-color: "agency-orange"
+
+  active:
+    transform: "scale(0.98)"
+
+  disabled:
+    opacity: 0.5
+    cursor: "not-allowed"
+    pointer-events: "none"
+
+  focus:
+    outline: "2px dashed agency-blue"
+    outline-offset: "2px"
+
+# Design Properties
+design:
+  border-radius: "sm" # 8px
+  font-weight: 600
+  text-transform: "none"
+  letter-spacing: "normal"
+  transition: "all 150ms ease-out"
+
+# Accessibility
+accessibility:
+  min-touch-target: 44 # px
+  contrast-ratio: "4.5:1" # WCAG AA
+  keyboard-support: ["Tab", "Enter", "Space"]
+  aria-attributes: ["role", "aria-label", "aria-disabled"]
+
+# Content Guidelines
+content:
+  max-length: 25 # characters
+  preferred-length: 15 # characters
+  style: "Active verbs only"
+  examples: ["開始する", "詳細を見る", "お問い合わせ", "ダウンロード"]
+  avoid: ["ここをクリック", "もっと見る", "送信"]
+
+# Implementation Notes for AI
+implementation:
+  responsive: "Maintain min-touch-target on all devices"
+  animation: "Respect prefers-reduced-motion"
+  loading-state: "Show spinner for async actions"
+  icon-support: "16px icons with 8px gap from text"

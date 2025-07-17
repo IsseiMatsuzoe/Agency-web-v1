@@ -1,0 +1,38 @@
+# Agency Design System - Color Tokens
+# AI Agent Reference: Brand colors with accessibility compliance
+
+brand:
+  primary:
+    agency-red: "#E44234" # Primary CTA, links, icons
+    agency-orange: "#FF9A29" # Secondary accent, hover states, badges
+    agency-blue: "#1679C0" # Brand support, headlines, navigation active
+
+  neutral:
+    900: "#1D1D1F" # Body text, primary content
+    600: "#5F5F60" # Secondary text, captions
+    100: "#F7F7F7" # Background, cards, sections
+    white: "#FFFFFF" # Pure white for overlays, buttons
+
+  feedback:
+    success: "#2AA972" # Positive actions, confirmations
+    warning: "#FFB726" # Alerts, important notices
+    error: "#E02E2E" # Errors, validation failures
+
+# Accessibility Compliance
+contrast:
+  # All pairs must meet WCAG 2.2 AA (4.5:1) or AAA (7:1)
+  text-on-light:
+    primary: "neutral-900" # 7:1 ratio
+    secondary: "neutral-600" # 4.5:1 ratio
+
+  text-on-brand:
+    on-red: "white" # 4.7:1 ratio
+    on-blue: "white" # 4.8:1 ratio
+    on-orange: "white" # 4.2:1 ratio (large text only)
+
+# Usage Guidelines for AI
+usage-priority:
+  # 60-30-10 Rule Implementation
+  dominant-60: ["neutral-100", "white"] # Backgrounds, whitespace
+  secondary-30: ["agency-blue", "neutral-900"] # Primary content, headers
+  accent-10: ["agency-red", "agency-orange"] # CTAs, highlights

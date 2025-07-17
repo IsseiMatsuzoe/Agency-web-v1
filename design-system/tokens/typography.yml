@@ -1,0 +1,97 @@
+# Agency Design System - Typography Tokens
+# AI Agent Reference: Font families, scales, and hierarchy
+
+fonts:
+  primary: "SF Pro, Inter, Roboto, Noto Sans JP, sans-serif" # Body text, UI elements
+  rounded: "Feather Bold, system-ui" # Large friendly headlines only
+
+# Dynamic Type Scale (Apple compatible)
+scale:
+  px: [12, 14, 16, 20, 24, 32, 40]
+  rem: [0.75, 0.875, 1, 1.25, 1.5, 2, 2.5]
+
+# Typography Hierarchy
+hierarchy:
+  h1:
+    font: "rounded"
+    size: 40 # px
+    weight: 700
+    line-height: 1.2
+    letter-spacing: "-1%"
+    color: "agency-blue"
+    usage: "Hero headlines only"
+
+  h2:
+    font: "rounded"
+    size: 32
+    weight: 700
+    line-height: 1.3
+    letter-spacing: "-0.5%"
+    color: "agency-blue"
+    usage: "Section headers"
+
+  h3:
+    font: "primary"
+    size: 24
+    weight: 600
+    line-height: 1.4
+    color: "neutral-900"
+    usage: "Subsection headers"
+
+  body-large:
+    font: "primary"
+    size: 20
+    weight: 400
+    line-height: 1.5
+    color: "neutral-900"
+    usage: "Hero subtext, important descriptions"
+
+  body:
+    font: "primary"
+    size: 16
+    weight: 400
+    line-height: 1.5
+    color: "neutral-900"
+    usage: "Default body text"
+
+  body-small:
+    font: "primary"
+    size: 14
+    weight: 400
+    line-height: 1.4
+    color: "neutral-600"
+    usage: "Captions, helper text"
+
+  caption:
+    font: "primary"
+    size: 12
+    weight: 400
+    line-height: 1.3
+    color: "neutral-600"
+    usage: "Fine print, labels"
+
+# Special Text Treatments
+emphasis:
+  cta-text:
+    weight: 600
+    color: "white"
+    usage: "Button labels"
+
+  link:
+    weight: 500
+    color: "agency-red"
+    text-decoration: "none"
+    hover-color: "agency-orange"
+    usage: "Interactive text links"
+
+  highlight:
+    weight: 700
+    color: "agency-red"
+    usage: "≤3 words per paragraph for emphasis"
+
+# AI Implementation Notes
+implementation:
+  mobile-first: true
+  responsive-scaling: "Use clamp() for fluid typography"
+  accessibility: "Respect user's dynamic type preferences"
+  max-emphasis: "≤3 bold words per paragraph"

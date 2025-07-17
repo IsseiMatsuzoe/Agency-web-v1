@@ -1,0 +1,256 @@
+AI_IMPLEMENTATION_INDEX_VERSION: "1.0"
+LAST_UPDATED: "2025-01-27"
+EXECUTION_PRIORITY: "CRITICAL"
+
+# Primary entry point for AI agents implementing Agency website
+# Read this file first, then follow the execution_order
+
+project_overview:
+  name: "Agency Corporate Website"
+  type: "nextjs_firebase_cms_website"
+  complexity: "medium"
+  estimated_completion: "20_hours"
+  ai_optimization: "machine_first_specifications"
+
+# File execution order for AI agents
+execution_order:
+  1_analyze_requirements:
+    file: "core-requirements.yml"
+    purpose: "Understand project constraints, stack, and technical requirements"
+    action: "Parse all sections thoroughly before proceeding"
+    critical_sections:
+      ["meta", "technical_requirements", "architecture", "design_system"]
+
+  2_study_routes:
+    file: "routes-specification.yml"
+    purpose: "Understand page structure, components, and data flow"
+    action: "Map all routes and their component dependencies"
+    critical_sections: ["routes", "global_settings", "data_types"]
+
+  3_review_components:
+    file: "component-library.yml"
+    purpose: "Understand component specifications and styling requirements"
+    action: "Plan component creation order based on dependencies"
+    critical_sections: ["components", "patterns", "design_tokens"]
+
+  4_configure_backend:
+    file: "firebase-configuration.yml"
+    purpose: "Understand database structure and backend services"
+    action: "Plan Firebase setup and security implementation"
+    critical_sections: ["firestore", "auth", "functions", "firecms"]
+
+  5_execute_implementation:
+    file: "implementation-guide.yml"
+    purpose: "Follow step-by-step implementation plan"
+    action: "Execute phases in order with validation at each step"
+    critical_sections: ["implementation_phases", "validation_checklist"]
+
+# Quick reference for AI decision making
+quick_decisions:
+  technology_stack:
+    frontend: "nextjs@15 + typescript + tailwindcss"
+    backend: "firebase (firestore + auth + functions + storage)"
+    cms: "firecms"
+    deployment: "firebase_hosting"
+
+  design_constraints:
+    brand_colors: ["#E44234", "#FF9A29", "#1679C0"]
+    typography: "Feather Bold + SF Pro"
+    min_touch_target: "44px"
+    contrast_ratio: "4.5:1"
+
+  performance_targets:
+    lighthouse_performance: ">= 90"
+    lighthouse_accessibility: ">= 95"
+    lcp: "<= 2.5s"
+    cls: "<= 0.1"
+    fid: "<= 100ms"
+
+  content_management:
+    collections: ["members", "news", "company_meta", "inquiries"]
+    admin_path: "/admin"
+    auth_method: "firebase_email_password"
+    cms_library: "firecms"
+
+# Implementation phases priority matrix
+priority_matrix:
+  phase_1_critical:
+    tasks: ["setup_nextjs", "install_dependencies", "configure_firebase"]
+    blocking: true
+    estimated_time: "2h"
+
+  phase_2_critical:
+    tasks:
+      [
+        "create_layout_components",
+        "create_ui_components",
+        "create_form_components",
+      ]
+    blocking: true
+    estimated_time: "4h"
+    depends_on: ["phase_1_critical"]
+
+  phase_3_critical:
+    tasks:
+      [
+        "create_home_page",
+        "create_about_page",
+        "create_news_pages",
+        "create_contact_page",
+      ]
+    blocking: true
+    estimated_time: "6h"
+    depends_on: ["phase_2_critical"]
+
+  phase_4_high:
+    tasks: ["setup_firecms", "configure_collections", "setup_authentication"]
+    blocking: false
+    estimated_time: "4h"
+    depends_on: ["phase_3_critical"]
+
+  phase_5_medium:
+    tasks: ["create_cloud_functions", "setup_email_notifications"]
+    blocking: false
+    estimated_time: "3h"
+    depends_on: ["phase_4_high"]
+
+  phase_6_medium:
+    tasks:
+      [
+        "implement_design_tokens",
+        "responsive_optimization",
+        "accessibility_audit",
+      ]
+    blocking: false
+    estimated_time: "3h"
+    depends_on: ["phase_3_critical"]
+
+  phase_7_medium:
+    tasks: ["optimize_images", "code_splitting", "performance_audit"]
+    blocking: false
+    estimated_time: "2h"
+    depends_on: ["phase_6_medium"]
+
+  phase_8_high:
+    tasks: ["configure_hosting", "setup_ci_cd", "domain_configuration"]
+    blocking: false
+    estimated_time: "2h"
+    depends_on: ["phase_7_medium"]
+
+# Critical validation points
+validation_gates:
+  after_phase_1:
+    - project_builds_successfully: true
+    - firebase_configured: true
+    - dependencies_installed: true
+
+  after_phase_2:
+    - all_components_render: true
+    - responsive_design_working: true
+    - accessibility_basics_implemented: true
+
+  after_phase_3:
+    - all_pages_accessible: true
+    - navigation_functional: true
+    - forms_working: true
+
+  after_phase_4:
+    - admin_panel_accessible: true
+    - crud_operations_working: true
+    - authentication_functional: true
+
+  final_validation:
+    - lighthouse_scores_meet_targets: true
+    - accessibility_wcag_aa_compliant: true
+    - performance_targets_achieved: true
+    - all_functionality_working: true
+
+# Error recovery strategies
+error_recovery:
+  build_failures: 1. "Check TypeScript errors and fix type issues"
+    2. "Verify import paths and component exports"
+    3. "Ensure all dependencies are properly installed"
+    4. "Check Tailwind configuration and class usage"
+
+  firebase_connection_issues: 1. "Verify .env.local configuration"
+    2. "Check Firebase project settings"
+    3. "Ensure API keys are correct and active"
+    4. "Verify Firebase SDK version compatibility"
+
+  styling_problems: 1. "Check Tailwind configuration file"
+    2. "Verify design token implementation"
+    3. "Test responsive breakpoints"
+    4. "Validate component class names"
+
+  performance_issues: 1. "Implement Next.js Image component"
+    2. "Add code splitting for heavy components"
+    3. "Optimize bundle size with dynamic imports"
+    4. "Enable Tailwind CSS purging"
+
+# Success indicators
+success_indicators:
+  development_complete:
+    - all_pages_load_without_errors: true
+    - forms_submit_successfully: true
+    - admin_panel_fully_functional: true
+    - responsive_design_verified: true
+    - accessibility_standards_met: true
+
+  production_ready:
+    - lighthouse_audit_passing: true
+    - firebase_hosting_configured: true
+    - ssl_certificate_active: true
+    - domain_configured: true
+    - monitoring_enabled: true
+
+  business_requirements_met:
+    - brand_guidelines_followed: true
+    - content_management_intuitive: true
+    - mobile_performance_excellent: true
+    - seo_optimized: true
+    - maintenance_sustainable: true
+
+# AI agent instructions
+ai_execution_notes:
+  read_order: "Follow execution_order 1-5 sequentially"
+  implementation_strategy: "Execute critical phases first, then high priority, then medium"
+  validation_strategy: "Validate after each phase before proceeding"
+  error_handling: "Use error_recovery strategies if issues arise"
+  quality_assurance: "Check success_indicators at completion"
+
+  optimization_hints:
+    - "Focus on mobile-first responsive design"
+    - "Implement accessibility from the beginning, not as an afterthought"
+    - "Use design tokens consistently across all components"
+    - "Prioritize performance optimization throughout development"
+    - "Test Firebase integration early and often"
+
+  common_pitfalls:
+    - "Don't ignore TypeScript errors - fix them immediately"
+    - "Don't implement custom CSS - use Tailwind classes"
+    - "Don't skip accessibility requirements - they're critical"
+    - "Don't deploy without performance validation"
+    - "Don't forget to test admin panel functionality"
+
+# File references for cross-validation
+related_files:
+  design_system: "/design-system/"
+  existing_components: "/src/components/"
+  original_blueprint: "/directions/blueprint.md"
+
+reference_priority:
+  1: "ai-specs/ files (this directory)"
+  2: "/design-system/ files for brand compliance"
+  3: "existing /src/ files for context"
+  4: "/directions/blueprint.md for original requirements"
+
+# Version information
+specification_metadata:
+  version: "1.0"
+  compatibility: "nextjs@15 + firebase@v9 + react@18"
+  target_audience: "ai_agents"
+  optimization_level: "machine_first"
+  human_readability: "minimal"
+  update_frequency: "as_needed"
+
+final_note: "These specifications are optimized for AI implementation. Execute in the specified order and validate at each phase for best results."

@@ -1,0 +1,451 @@
+FIREBASE_CONFIG_VERSION: "1.0"
+AI_IMPLEMENTATION_CONTEXT: "firebase_v9_nextjs"
+
+# Firebase project configuration
+firebase_setup:
+  projects:
+    development:
+      project_id: "agency-web-dev"
+      app_id: "1:123456789:web:abcdef123456"
+      region: "asia-northeast1"
+      
+    staging:
+      project_id: "agency-web-staging"
+      app_id: "1:123456789:web:abcdef789012"
+      region: "asia-northeast1"
+      
+    production:
+      project_id: "agency-web-prod"
+      app_id: "1:123456789:web:abcdef345678"
+      region: "asia-northeast1"
+
+# Firestore database structure
+firestore:
+  database_id: "(default)"
+  rules_file: "firestore.rules"
+  
+  collections:
+    members:
+      document_structure:
+        name: "string"
+        role: "string"
+        bio: "string"
+        image: "string"
+        order: "number"
+        active: "boolean"
+        created_at: "timestamp"
+        updated_at: "timestamp"
+      
+      indexes:
+        - fields: ["active", "order"]
+          order: "ascending"
+        - fields: ["active", "created_at"]
+          order: "descending"
+      
+      security_rules: |
+        allow read: if resource.data.active == true;
+        allow write: if request.auth != null && 
+                        resource.data.role in ['admin', 'super_admin'];
+    
+    news:
+      document_structure:
+        title: "string"
+        slug: "string"
+        content: "string"
+        excerpt: "string"
+        cover_image: "string"
+        tags: "array<string>"
+        published_date: "timestamp"
+        author: "string"
+        status: "string" # enum: draft, published, archived
+        created_at: "timestamp"
+        updated_at: "timestamp"
+        view_count: "number"
+      
+      indexes:
+        - fields: ["status", "published_date"]
+          order: "descending"
+        - fields: ["tags", "published_date"]
+          order: "descending"
+        - fields: ["slug"]
+          order: "ascending"
+      
+      security_rules: |
+        allow read: if resource.data.status == 'published';
+        allow write: if request.auth != null && 
+                        resource.data.role in ['admin', 'super_admin', 'editor'];
+    
+    company_meta:
+      document_id: "main"
+      document_structure:
+        mission_text: "string"
+        established_date: "timestamp"
+        capital: "string"
+        address: "string"
+        contact_email: "string"
+        updated_at: "timestamp"
+        updated_by: "string"
+      
+      security_rules: |
+        allow read: if true;
+        allow write: if request.auth != null && 
+                        resource.data.role in ['admin', 'super_admin'];
+    
+    inquiries:
+      document_structure:
+        name: "string"
+        email: "string"
+        phone: "string"
+        message: "string"
+        submitted_at: "timestamp"
+        status: "string" # enum: new, in_progress, resolved
+        admin_notes: "string"
+        ip_address: "string"
+        user_agent: "string"
+      
+      indexes:
+        - fields: ["status", "submitted_at"]
+          order: "descending"
+        - fields: ["submitted_at"]
+          order: "descending"
+      
+      security_rules: |
+        allow create: if true;
+        allow read, update: if request.auth != null && 
+                              resource.data.role in ['admin', 'super_admin'];
+    
+    admin_users:
+      document_structure:
+        email: "string"
+        name: "string"
+        role: "string" # enum: admin, super_admin, editor
+        active: "boolean"
+        last_login: "timestamp"
+        created_at: "timestamp"
+        created_by: "string"
+      
+      security_rules: |
+        allow read, write: if request.auth != null && 
+                             resource.data.role in ['admin', 'super_admin'];
+
+# Firebase Authentication
+auth:
+  providers:
+    - email_password
+  
+  settings:
+    password_policy:
+      min_length: 8
+      require_uppercase: true
+      require_lowercase: true
+      require_numbers: true
+      require_symbols: false
+    
+    session_timeout: "24h"
+    
+  custom_claims:
+    role: "string" # admin, super_admin, editor
+    permissions: "array<string>"
+  
+  security_rules: |
+    allow create: if request.auth == null; // Allow signup
+    allow read, update, delete: if request.auth != null && 
+                                   request.auth.uid == resource.id;
+
+# Firebase Storage
+storage:
+  buckets:
+    default:
+      rules_file: "storage.rules"
+      structure:
+        members/
+          images/
+            "*.{jpg,jpeg,png,webp}" # Member profile images
+        news/
+          images/
+            "*.{jpg,jpeg,png,webp}" # News article images
+          covers/
+            "*.{jpg,jpeg,png,webp}" # News cover images
+        uploads/
+          "*.{jpg,jpeg,png,pdf}" # General uploads
+  
+  security_rules: |
+    match /members/images/{imageId} {
+      allow read: if true;
+      allow write: if request.auth != null && 
+                      request.auth.token.role in ['admin', 'super_admin'];
+    }
+    match /news/images/{imageId} {
+      allow read: if true;
+      allow write: if request.auth != null && 
+                      request.auth.token.role in ['admin', 'super_admin', 'editor'];
+    }
+    match /uploads/{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+                      request.auth.token.role in ['admin', 'super_admin'];
+    }
+  
+  upload_constraints:
+    max_file_size: "10MB"
+    allowed_types: ["image/jpeg", "image/png", "image/webp", "application/pdf"]
+    image_optimization:
+      resize_on_upload: true
+      generate_thumbnails: true
+      thumbnail_sizes: [150, 300, 600]
+
+# Cloud Functions
+functions:
+  runtime: "nodejs18"
+  region: "asia-northeast1"
+  
+  functions_list:
+    contact_form_submit:
+      trigger: "https"
+      description: "Process contact form submissions"
+      environment_variables:
+        SENDGRID_API_KEY: "required"
+        ADMIN_EMAIL: "required"
+      timeout: "60s"
+      memory: "256MB"
+    
+    send_inquiry_notification:
+      trigger: "firestore"
+      document: "inquiries/{docId}"
+      events: ["create"]
+      description: "Send email notification when new inquiry is created"
+      timeout: "30s"
+      memory: "256MB"
+    
+    generate_news_slug:
+      trigger: "firestore"
+      document: "news/{docId}"
+      events: ["create", "update"]
+      description: "Auto-generate URL slug for news articles"
+      timeout: "30s"
+      memory: "256MB"
+    
+    optimize_uploaded_images:
+      trigger: "storage"
+      description: "Optimize images on upload"
+      timeout: "300s"
+      memory: "1GB"
+    
+    cleanup_old_inquiries:
+      trigger: "schedule"
+      schedule: "0 2 * * 0" # Weekly on Sunday at 2 AM
+      description: "Archive old inquiries"
+      timeout: "300s"
+      memory: "256MB"
+    
+    backup_firestore:
+      trigger: "schedule"
+      schedule: "0 1 * * *" # Daily at 1 AM
+      description: "Export Firestore data to Cloud Storage"
+      timeout: "600s"
+      memory: "512MB"
+
+# Firebase Hosting
+hosting:
+  site_id: "agency-web"
+  public_directory: "out"
+  
+  redirects:
+    - source: "/old-about"
+      destination: "/about"
+      type: 301
+    - source: "/blog/**"
+      destination: "/news/:splat"
+      type: 301
+  
+  headers:
+    - source: "**/*.@(js|css)"
+      headers:
+        - key: "Cache-Control"
+          value: "max-age=31536000"
+    - source: "**/*.@(jpg|jpeg|png|webp|svg|ico)"
+      headers:
+        - key: "Cache-Control"
+          value: "max-age=31536000"
+  
+  rewrites:
+    - source: "/admin/**"
+      destination: "/admin/index.html"
+    - source: "**"
+      destination: "/index.html"
+
+# FireCMS Configuration
+firecms:
+  admin_path: "/admin"
+  
+  authentication:
+    provider: "firebase_auth"
+    required_roles: ["admin", "super_admin", "editor"]
+    login_redirect: "/admin/login"
+  
+  collections_config:
+    members:
+      name: "Members"
+      icon: "People"
+      group: "Content"
+      permissions: ["create", "read", "update", "delete"]
+      
+      properties:
+        name:
+          name: "Name"
+          dataType: "string"
+          validation: {required: true, max: 100}
+        role:
+          name: "Role"
+          dataType: "string"
+          validation: {required: true, max: 50}
+        bio:
+          name: "Biography"
+          dataType: "string"
+          multiline: true
+          validation: {max: 500}
+        image:
+          name: "Profile Image"
+          dataType: "string"
+          storage: {mediaType: "image", path: "members/images"}
+        order:
+          name: "Display Order"
+          dataType: "number"
+          validation: {required: true, min: 0}
+        active:
+          name: "Active"
+          dataType: "boolean"
+    
+    news:
+      name: "News"
+      icon: "Article"
+      group: "Content"
+      permissions: ["create", "read", "update", "delete"]
+      
+      properties:
+        title:
+          name: "Title"
+          dataType: "string"
+          validation: {required: true, max: 200}
+        slug:
+          name: "URL Slug"
+          dataType: "string"
+          validation: {required: true, max: 100}
+        content:
+          name: "Content"
+          dataType: "string"
+          markdown: true
+          validation: {required: true}
+        excerpt:
+          name: "Excerpt"
+          dataType: "string"
+          multiline: true
+          validation: {max: 300}
+        cover_image:
+          name: "Cover Image"
+          dataType: "string"
+          storage: {mediaType: "image", path: "news/covers"}
+        tags:
+          name: "Tags"
+          dataType: "array"
+          of: {dataType: "string"}
+        published_date:
+          name: "Published Date"
+          dataType: "timestamp"
+          validation: {required: true}
+        author:
+          name: "Author"
+          dataType: "string"
+          validation: {required: true}
+        status:
+          name: "Status"
+          dataType: "string"
+          enumValues: ["draft", "published", "archived"]
+          validation: {required: true}
+    
+    inquiries:
+      name: "Inquiries"
+      icon: "Email"
+      group: "Management"
+      permissions: ["read", "update"]
+      
+      properties:
+        name:
+          name: "Name"
+          dataType: "string"
+          disabled: true
+        email:
+          name: "Email"
+          dataType: "string"
+          email: true
+          disabled: true
+        phone:
+          name: "Phone"
+          dataType: "string"
+          disabled: true
+        message:
+          name: "Message"
+          dataType: "string"
+          multiline: true
+          disabled: true
+        submitted_at:
+          name: "Submitted At"
+          dataType: "timestamp"
+          disabled: true
+        status:
+          name: "Status"
+          dataType: "string"
+          enumValues: ["new", "in_progress", "resolved"]
+        admin_notes:
+          name: "Admin Notes"
+          dataType: "string"
+          multiline: true
+
+# Environment Configuration
+environments:
+  development:
+    firebase_config:
+      apiKey: "DEV_API_KEY"
+      authDomain: "agency-web-dev.firebaseapp.com"
+      projectId: "agency-web-dev"
+      storageBucket: "agency-web-dev.appspot.com"
+      messagingSenderId: "123456789"
+      appId: "1:123456789:web:abcdef123456"
+    
+    external_services:
+      sendgrid_api_key: "SG.DEV_KEY"
+      admin_email: "dev@agency.local"
+  
+  production:
+    firebase_config:
+      apiKey: "PROD_API_KEY"
+      authDomain: "agency-web-prod.firebaseapp.com"
+      projectId: "agency-web-prod"
+      storageBucket: "agency-web-prod.appspot.com"
+      messagingSenderId: "987654321"
+      appId: "1:987654321:web:fedcba654321"
+    
+    external_services:
+      sendgrid_api_key: "SG.PROD_KEY"
+      admin_email: "contact@agency.co.jp"
+
+# Security Configuration
+security:
+  firestore_rules: "firestore.rules"
+  storage_rules: "storage.rules"
+  
+  rate_limiting:
+    contact_form: "5_requests_per_minute"
+    admin_login: "10_requests_per_minute"
+    image_upload: "20_requests_per_hour"
+  
+  data_protection:
+    inquiry_retention: "365_days"
+    log_retention: "90_days"
+    personal_data_encryption: true
+  
+  monitoring:
+    error_reporting: true
+    performance_monitoring: true
+    security_alerts: true
+    quota_alerts: true 

@@ -1,0 +1,324 @@
+# Agency Cursor Rules
+
+# 株式会社 Agency 開発用の Cursor AI 設定ルール
+
+# Updated: 2025-01-27 - Integrated with AI Specifications System
+
+## Project Context
+
+This is a Next.js 15 (App Router) project with TypeScript, Tailwind CSS, and Firebase hosting for 株式会社 Agency's corporate website.
+
+## 🤖 AI Specifications Integration
+
+**PRIORITY**: AI agents MUST reference the structured specifications system for implementation:
+
+### Primary AI Reference (Implementation Priority)
+
+1. **Start here**: `/ai-specs/ai-implementation-index.yml` - Main entry point for AI agents
+2. **Core specs**: `/ai-specs/core-requirements.yml` - Project requirements and constraints
+3. **Routes**: `/ai-specs/routes-specification.yml` - Page and component definitions
+4. **Components**: `/ai-specs/component-library.yml` - Implementation specifications
+5. **Backend**: `/ai-specs/firebase-configuration.yml` - Database and services setup
+6. **Guide**: `/ai-specs/implementation-guide.yml` - Step-by-step execution plan
+
+### Legacy Reference (Context Only)
+
+- **Design system**: `/design-system/` - Brand guidelines and design tokens
+- **Original blueprint**: `/directions/blueprint-original.md` - Archived requirements
+
+### Implementation Strategy
+
+- Follow the 8-phase implementation plan in `/ai-specs/implementation-guide.yml`
+- Validate at each phase before proceeding
+- Execute CRITICAL phases first, then HIGH, then MEDIUM priority
+- Reference component specifications for exact props, styling, and behavior
+
+## Design System Integration
+
+ALWAYS reference the structured design system and AI specifications:
+
+### Quick Reference Priority
+
+1. **AI Specs**: `/ai-specs/` directory for technical implementation
+2. **Design tokens**: `/design-system/tokens/` - Colors, typography, spacing, layout
+3. **Components**: `/design-system/components/` - Design specifications
+4. **Accessibility**: `/design-system/principles/accessibility.yml` - WCAG 2.2 AA requirements
+5. **Content**: `/design-system/content/voice-tone.md` - Writing guidelines
+
+### Brand Identity Enforcement
+
+- **Colors**: Use only Agency Red (#E44234), Agency Orange (#FF9A29), Agency Blue (#1679C0)
+- **Typography**: Headlines use "Feather Bold", body text uses "SF Pro/Inter/Roboto"
+- **Values**: Reflect 誠実さ (sincerity) and 親しみやすさ (approachability)
+- **Style**: Warm professionalism (Apple HIG + Duolingo warmth)
+
+## Development Standards
+
+### File Structure (from AI specs)
+
+```
+src/
+├── app/                    # Next.js App Router pages
+│   ├── page.tsx           # Home page
+│   ├── about/             # About page
+│   ├── news/              # News pages (list & detail)
+│   ├── contact/           # Contact page
+│   └── admin/             # FireCMS admin panel
+├── components/             # Reusable React components
+│   ├── ui/                # Basic UI components (Button, Card, etc.)
+│   ├── forms/             # Form components
+│   └── sections/          # Page section components
+├── lib/                   # Utilities (Firebase, auth, etc.)
+└── types/                 # TypeScript definitions
+```
+
+### Component Creation Rules (Enhanced)
+
+1. **Mobile-first**: Start with 390px viewport optimization
+2. **Accessibility first**: Apply WCAG 2.2 AA from beginning
+3. **AI spec compliance**: Follow exact specifications in `/ai-specs/component-library.yml`
+4. **Responsive**: Follow 4/8/12 column grid system
+5. **Performance**: Target sub-2s LCP on mobile
+6. **TypeScript**: Use proper type definitions from AI specs
+
+### Required Accessibility Features
+
+- 4.5:1 minimum contrast ratios
+- 44px minimum touch targets
+- Keyboard navigation support (Tab, Enter, Space, Escape)
+- Proper heading hierarchy (H1→H2→H3)
+- Alt text for all images
+- Form labels for all inputs
+- Focus indicators (2px dashed #1679C0)
+- ARIA landmarks and roles
+
+### Typography Hierarchy (AI Spec Compliant)
+
+- **H1**: 40px (text-4xl), Feather Bold, text-[#1679C0]
+- **H2**: 32px (text-2xl), Feather Bold, text-[#1679C0]
+- **H3**: 24px (text-xl), SF Pro, font-semibold, text-gray-900
+- **Body**: 16px (text-base), SF Pro, font-normal, text-gray-900
+- **Small**: 14px (text-sm), SF Pro, font-normal, text-gray-600
+
+### Component Standards (From AI Specs)
+
+#### Buttons (Multiple Variants)
+
+```tsx
+// Primary CTA
+className =
+  "bg-[#E44234] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#FF9A29] transition-all duration-150 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-[#E44234] focus:ring-offset-2";
+
+// Secondary
+className =
+  "bg-[#1679C0] text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-all duration-150 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-[#1679C0] focus:ring-offset-2";
+
+// Outline
+className =
+  "border-2 border-[#1679C0] text-[#1679C0] px-6 py-3 rounded-lg font-semibold hover:bg-[#1679C0] hover:text-white transition-all duration-150 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-[#1679C0] focus:ring-offset-2";
+```
+
+#### Cards (Enhanced)
+
+```tsx
+className =
+  "bg-white rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-lg hover:-translate-y-1 transition-all duration-200";
+```
+
+#### Forms (From AI Specs)
+
+```tsx
+// Input fields
+className =
+  "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1679C0] focus:border-transparent";
+
+// Labels
+className = "block text-sm font-medium text-gray-900 mb-2";
+
+// Error messages
+className = "text-red-600 text-sm mt-1";
+```
+
+#### Responsive Grid (Enhanced)
+
+```tsx
+className =
+  "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto px-4";
+```
+
+### Firebase Integration (AI Spec Compliant)
+
+- Use `/src/lib/firebase.ts` for configuration
+- Environment variables in `.env.local`
+- Collections: members, news, company_meta, inquiries
+- FireCMS admin panel at `/admin`
+- Static export configuration in `next.config.js`
+- Security rules for Firestore and Storage
+
+### Content Guidelines (Enhanced)
+
+- **Japanese**: Use です/ます調 (polite form)
+- **CTAs**: Action verbs like "開始する", "発見する", "体験する"
+- **Avoid**: "ここをクリック", "もっと見る", "送信"
+- **Headlines**: Max 45 characters, specific value propositions
+- **Voice**: Conversational but professional, enthusiastic, clear
+- **Form labels**: Use Japanese as specified in AI specs
+
+### Testing Requirements (From AI Specs)
+
+Before completing any component:
+
+1. Test keyboard navigation (Tab through all interactive elements)
+2. Verify color contrast meets 4.5:1 ratio
+3. Ensure mobile responsiveness at 390px, 768px, 1024px, 1280px
+4. Check focus indicators are visible
+5. Validate proper semantic HTML structure
+6. Test with screen readers if possible
+7. Verify form validation works (client & server side)
+
+### Performance Optimization (AI Spec Targets)
+
+- Use Next.js Image component for all images
+- Implement lazy loading for non-critical content
+- Target Core Web Vitals: LCP <2.5s, CLS <0.1, FID <100ms
+- Lighthouse scores: Performance ≥90, Accessibility ≥95, SEO ≥95
+- Mobile-first CSS with progressive enhancement
+- Code splitting for heavy components
+
+### Code Style (Enhanced)
+
+- Use TypeScript for all new files
+- Prefer functional components with hooks
+- Use Tailwind classes over custom CSS
+- Comment complex logic in Japanese
+- Follow exact naming conventions from AI specs
+- Use proper prop types as defined in component specifications
+- Implement error boundaries and loading states
+
+### Firebase Collections (From AI Specs)
+
+```typescript
+// Member document structure
+interface Member {
+  name: string;
+  role: string;
+  bio: string;
+  image: string;
+  order: number;
+  active: boolean;
+  created_at: Timestamp;
+  updated_at: Timestamp;
+}
+
+// News document structure
+interface NewsItem {
+  title: string;
+  slug: string;
+  content: string;
+  excerpt: string;
+  cover_image: string;
+  tags: string[];
+  published_date: Timestamp;
+  author: string;
+  status: "draft" | "published" | "archived";
+  created_at: Timestamp;
+  updated_at: Timestamp;
+}
+```
+
+## Implementation Phases (From AI Specs)
+
+Follow this exact order:
+
+### Phase 1 (CRITICAL): Project Setup
+
+- Setup Next.js project with TypeScript and Tailwind
+- Install Firebase and dependencies
+- Configure environment variables
+
+### Phase 2 (CRITICAL): Core Components
+
+- Create Header, Footer, Button, Card, LoadingSpinner
+- Implement ContactForm with validation
+- Ensure accessibility compliance
+
+### Phase 3 (CRITICAL): Page Implementation
+
+- Create all pages: Home, About, News, Contact
+- Implement responsive layouts
+- Connect to Firebase data
+
+### Phase 4 (HIGH): CMS Integration
+
+- Setup FireCMS admin panel
+- Configure collections and authentication
+- Test CRUD operations
+
+### Phases 5-8 (MEDIUM): Optimization
+
+- Cloud Functions, Styling, Performance, Deployment
+
+## Quality Checklist (Enhanced)
+
+Before submitting any code, verify:
+
+- [ ] Follows AI specifications exactly
+- [ ] Meets accessibility requirements (WCAG 2.2 AA)
+- [ ] Mobile-responsive (390px+)
+- [ ] Uses correct brand colors
+- [ ] Proper Japanese content style
+- [ ] Keyboard navigation works
+- [ ] Focus indicators visible
+- [ ] Performance optimized (Core Web Vitals)
+- [ ] TypeScript types correct
+- [ ] Firebase integration working
+- [ ] Error handling implemented
+- [ ] Loading states functional
+
+## Error Recovery (From AI Specs)
+
+Common issues and solutions:
+
+### Build Failures
+
+1. Check TypeScript errors and fix type issues
+2. Verify import paths and component exports
+3. Ensure all dependencies are properly installed
+4. Check Tailwind configuration and class usage
+
+### Firebase Connection Issues
+
+1. Verify `.env.local` configuration
+2. Check Firebase project settings
+3. Ensure API keys are correct and active
+4. Verify Firebase SDK version compatibility
+
+### Performance Issues
+
+1. Implement Next.js Image component
+2. Add code splitting for heavy components
+3. Optimize bundle size with dynamic imports
+4. Enable Tailwind CSS purging
+
+## Emergency References
+
+If AI specs are unavailable, use these fallbacks:
+
+- Primary: #E44234 (Agency Red)
+- Secondary: #FF9A29 (Agency Orange)
+- Brand: #1679C0 (Agency Blue)
+- Text: #1D1D1F
+- Background: #F7F7F7
+- Min touch target: 44px
+- Base spacing: 4px scale [4,8,12,16,24,32,48,64]
+
+## Special Instructions
+
+- **Always prioritize AI specifications over design system when in conflict**
+- Maintain consistency with existing components
+- When in doubt, reference `/ai-specs/ai-implementation-index.yml`
+- Test accessibility features thoroughly
+- Consider mobile users first in all decisions
+- Validate each implementation phase before proceeding
+- Use exact component props and styling from AI specs
+- Implement Firebase security rules as specified

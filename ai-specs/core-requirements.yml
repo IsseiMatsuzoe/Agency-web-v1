@@ -1,0 +1,215 @@
+PROJECT_SPEC_VERSION: "1.0"
+LAST_UPDATED: "2025-01-27"
+AI_PARSING_PRIORITY: "HIGH"
+
+# Core project metadata
+meta:
+  company_name: "Agency"
+  project_type: "corporate_website"
+  stack:
+    framework: "nextjs@15"
+    runtime: "nodejs@18"
+    database: "firestore"
+    auth: "firebase_auth"
+    storage: "firebase_storage"
+    functions: "firebase_functions"
+    styling: "tailwindcss"
+    cms: "firecms"
+    deployment: "firebase_hosting"
+
+# Technical constraints and requirements
+technical_requirements:
+  performance:
+    target_lcp: "2500ms"
+    target_cls: "0.1"
+    target_fid: "100ms"
+    mobile_first: true
+    viewport_min: "390px"
+
+  accessibility:
+    wcag_level: "AA"
+    contrast_ratio: "4.5:1"
+    min_touch_target: "44px"
+    keyboard_navigation: true
+    screen_reader_support: true
+    focus_indicators: true
+
+  browser_support:
+    - "chrome@latest-2"
+    - "firefox@latest-2"
+    - "safari@latest-2"
+    - "edge@latest-2"
+
+# Application architecture
+architecture:
+  pattern: "jamstack"
+  rendering: "static_generation"
+  data_flow: "client_side_hydration"
+  state_management: "react_hooks"
+
+  folder_structure:
+    src:
+      app: "nextjs_app_router_pages"
+      components: "reusable_react_components"
+      lib: "utilities_and_configs"
+      types: "typescript_definitions"
+
+  component_patterns:
+    - "atomic_design"
+    - "compound_components"
+    - "render_props"
+
+# Content management system
+cms_configuration:
+  admin_path: "/admin"
+  auth_method: "firebase_email_password"
+  role_based_access: true
+  max_admin_users: 10
+
+  collections:
+    members:
+      fields: ["name", "role", "bio", "image", "order", "active"]
+      permissions: ["create", "read", "update", "delete"]
+
+    news:
+      fields:
+        [
+          "title",
+          "slug",
+          "content",
+          "excerpt",
+          "cover_image",
+          "tags",
+          "published_date",
+          "author",
+          "status",
+        ]
+      permissions: ["create", "read", "update", "delete"]
+
+    company_meta:
+      fields:
+        [
+          "mission_text",
+          "established_date",
+          "capital",
+          "address",
+          "contact_email",
+        ]
+      permissions: ["read", "update"]
+
+    inquiries:
+      fields:
+        [
+          "name",
+          "email",
+          "phone",
+          "message",
+          "submitted_at",
+          "status",
+          "admin_notes",
+        ]
+      permissions: ["create", "read", "update"]
+
+# SEO and metadata
+seo_configuration:
+  title_template: "%s | Agency"
+  default_description: "株式会社Agency - 誠実で親しみやすいデジタルソリューション"
+  default_keywords: ["Agency", "デジタル", "ソリューション", "企業"]
+
+  sitemap: true
+  robots_txt: true
+
+  open_graph:
+    default_image: "/og-default.png"
+    locale: "ja_JP"
+    site_name: "Agency"
+
+  structured_data:
+    organization: true
+    breadcrumbs: true
+
+# Design system integration
+design_system:
+  tokens_path: "/design-system/tokens/"
+  components_path: "/design-system/components/"
+
+  brand_colors:
+    primary: "#E44234" # Agency Red
+    secondary: "#FF9A29" # Agency Orange
+    accent: "#1679C0" # Agency Blue
+
+  typography:
+    headings: "Feather Bold"
+    body: "SF Pro"
+    fallbacks: ["Inter", "Roboto", "system-ui"]
+
+  spacing_scale: [4, 8, 12, 16, 24, 32, 48, 64]
+
+  breakpoints:
+    sm: "640px"
+    md: "768px"
+    lg: "1024px"
+    xl: "1280px"
+
+# Error handling and monitoring
+error_handling:
+  error_boundaries: true
+  fallback_ui: true
+  logging: "firebase_analytics"
+
+  client_errors:
+    - "component_render_errors"
+    - "network_failures"
+    - "form_validation_errors"
+
+  server_errors:
+    - "function_timeouts"
+    - "database_connection_errors"
+    - "authentication_failures"
+
+# Security requirements
+security:
+  input_validation: "strict"
+  xss_protection: true
+  csrf_protection: true
+  content_security_policy: true
+
+  firebase_rules:
+    firestore: "custom_rules_required"
+    storage: "authenticated_uploads_only"
+
+  sensitive_data:
+    contact_forms: "encrypted_at_rest"
+    admin_sessions: "secure_cookies_only"
+
+# Deployment and environments
+deployment:
+  environments:
+    development:
+      firebase_project: "agency-web-dev"
+      domain: "dev.agency.local"
+
+    staging:
+      firebase_project: "agency-web-staging"
+      domain: "staging.agency.co.jp"
+
+    production:
+      firebase_project: "agency-web-prod"
+      domain: "agency.co.jp"
+
+  ci_cd:
+    triggers: ["push_to_main", "pull_request"]
+    tests: ["unit", "integration", "accessibility"]
+    preview_channels: true
+
+# Maintenance and monitoring
+maintenance:
+  backup_strategy: "daily_firestore_export"
+  update_schedule: "monthly_dependencies"
+  monitoring: "firebase_performance"
+
+  content_workflow:
+    - draft_creation
+    - internal_review
+    - publication
+    - archival

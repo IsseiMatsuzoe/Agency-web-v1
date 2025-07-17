@@ -1,0 +1,301 @@
+ROUTE_SPEC_VERSION: "1.0"
+AI_PARSING_CONTEXT: "nextjs_app_router"
+
+# Route definitions with detailed component specifications
+routes:
+  home:
+    path: "/"
+    page_component: "HomePage"
+    metadata:
+      title: "Agency - 誠実で親しみやすいデジタルソリューション"
+      description: "株式会社Agencyのコーポレートサイト。信頼性と親しみやすさを両立したデジタルソリューションを提供します。"
+      keywords: ["Agency", "デジタル", "企業", "ソリューション"]
+
+    sections:
+      hero:
+        component: "HeroSection"
+        data_source: "static"
+        required_props:
+          - title: "string"
+          - subtitle: "string"
+          - cta_text: "string"
+          - cta_link: "string"
+          - background_image: "string"
+        accessibility:
+          - h1_heading: true
+          - focus_trap: false
+          - landmark: "banner"
+
+      mission:
+        component: "MissionSection"
+        data_source: "firestore:company_meta"
+        required_props:
+          - mission_text: "rich_text"
+        accessibility:
+          - h2_heading: true
+          - landmark: "main"
+
+      members_preview:
+        component: "MembersPreview"
+        data_source: "firestore:members"
+        query_params:
+          limit: 3
+          where: ["active", "==", true]
+          orderBy: ["order", "asc"]
+        required_props:
+          - members: "array<Member>"
+        accessibility:
+          - h2_heading: true
+          - card_grid: true
+          - landmark: "region"
+
+      news_preview:
+        component: "NewsPreview"
+        data_source: "firestore:news"
+        query_params:
+          limit: 3
+          where: ["status", "==", "published"]
+          orderBy: ["published_date", "desc"]
+        required_props:
+          - news_items: "array<NewsItem>"
+        accessibility:
+          - h2_heading: true
+          - card_grid: true
+          - landmark: "region"
+
+      cta_footer:
+        component: "CTAFooterSection"
+        data_source: "static"
+        required_props:
+          - heading: "string"
+          - description: "string"
+          - cta_text: "string"
+          - cta_link: "string"
+        accessibility:
+          - h2_heading: true
+          - landmark: "contentinfo"
+
+  about:
+    path: "/about"
+    page_component: "AboutPage"
+    metadata:
+      title: "About - Agency"
+      description: "株式会社Agencyのメンバーと企業情報をご紹介します。"
+      keywords: ["Agency", "メンバー", "企業情報", "会社概要"]
+
+    sections:
+      full_members:
+        component: "MembersGrid"
+        data_source: "firestore:members"
+        query_params:
+          where: ["active", "==", true]
+          orderBy: ["order", "asc"]
+        required_props:
+          - members: "array<Member>"
+        features:
+          - sortable: true
+          - filterable: false
+          - pagination: false
+        accessibility:
+          - h1_heading: true
+          - card_grid: true
+          - keyboard_navigation: true
+          - landmark: "main"
+
+      company_facts:
+        component: "CompanyFacts"
+        data_source: "firestore:company_meta"
+        required_props:
+          - established_date: "date"
+          - capital: "string"
+          - address: "string"
+          - contact_email: "email"
+        accessibility:
+          - h2_heading: true
+          - definition_list: true
+          - landmark: "complementary"
+
+  news:
+    path: "/news"
+    page_component: "NewsPage"
+    metadata:
+      title: "News - Agency"
+      description: "株式会社Agencyの最新ニュースと情報をお届けします。"
+      keywords: ["Agency", "ニュース", "お知らせ", "情報"]
+
+    list_view:
+      component: "NewsGrid"
+      data_source: "firestore:news"
+      query_params:
+        where: ["status", "==", "published"]
+        orderBy: ["published_date", "desc"]
+        limit: 12
+      required_props:
+        - news_items: "array<NewsItem>"
+      features:
+        - pagination: true
+        - filtering: ["tags"]
+        - sorting: ["date", "title"]
+        - search: true
+      accessibility:
+        - h1_heading: true
+        - card_grid: true
+        - pagination_navigation: true
+        - landmark: "main"
+
+    detail_view:
+      path: "/news/[slug]"
+      component: "NewsDetail"
+      data_source: "firestore:news"
+      query_params:
+        where: ["slug", "==", "params.slug"]
+      required_props:
+        - news_item: "NewsItem"
+      features:
+        - markdown_rendering: true
+        - social_sharing: true
+        - related_articles: 3
+      accessibility:
+        - h1_heading: true
+        - article_landmark: true
+        - breadcrumb_navigation: true
+        - reading_landmarks: true
+
+  contact:
+    path: "/contact"
+    page_component: "ContactPage"
+    metadata:
+      title: "Contact - Agency"
+      description: "株式会社Agencyへのお問い合わせはこちらから。お気軽にご連絡ください。"
+      keywords: ["Agency", "お問い合わせ", "連絡", "コンタクト"]
+
+    sections:
+      contact_form:
+        component: "ContactForm"
+        form_config:
+          method: "POST"
+          validation: "client_and_server"
+          submission: "firebase_function"
+
+        fields:
+          name:
+            type: "text"
+            required: true
+            validation: ["min_length:1", "max_length:100"]
+            accessibility:
+              label: "お名前"
+              required_indicator: true
+
+          email:
+            type: "email"
+            required: "conditional"
+            validation: ["email_format"]
+            accessibility:
+              label: "メールアドレス"
+              description: "電話番号またはメールアドレスのいずれかは必須です"
+
+          phone:
+            type: "tel"
+            required: "conditional"
+            validation: ["phone_format"]
+            accessibility:
+              label: "電話番号"
+              description: "電話番号またはメールアドレスのいずれかは必須です"
+
+          message:
+            type: "textarea"
+            required: true
+            validation: ["min_length:10", "max_length:1000"]
+            accessibility:
+              label: "お問い合わせ内容"
+              required_indicator: true
+              character_count: true
+
+        submit_actions:
+          - action: "firestore_write"
+            collection: "inquiries"
+            fields: "all_form_fields"
+          - action: "email_notification"
+            to: "placeholder@agency.io"
+            template: "inquiry_notification"
+
+        accessibility:
+          - h1_heading: true
+          - form_landmark: true
+          - error_announcements: true
+          - success_announcements: true
+          - keyboard_navigation: true
+
+  admin:
+    path: "/admin"
+    page_component: "AdminDashboard"
+    authentication:
+      required: true
+      role: "admin"
+      redirect_unauthorized: "/admin/login"
+
+    cms_integration:
+      library: "firecms"
+      collections: ["members", "news", "company_meta", "inquiries"]
+      custom_views: ["dashboard", "analytics"]
+
+# Global route configuration
+global_settings:
+  authentication:
+    protected_routes: ["/admin", "/admin/*"]
+    login_page: "/admin/login"
+    session_timeout: "24h"
+
+  seo:
+    default_og_image: "/og-default.png"
+    sitemap_generation: true
+    robots_txt: true
+
+  error_pages:
+    404:
+      component: "NotFoundPage"
+      title: "ページが見つかりません - Agency"
+    500:
+      component: "ServerErrorPage"
+      title: "サーバーエラー - Agency"
+
+  loading_states:
+    suspense_fallback: "LoadingSpinner"
+    error_boundary: "ErrorBoundary"
+
+# Data type definitions for AI reference
+data_types:
+  Member:
+    name: "string"
+    role: "string"
+    bio: "string"
+    image: "string"
+    order: "number"
+    active: "boolean"
+
+  NewsItem:
+    title: "string"
+    slug: "string"
+    content: "markdown_string"
+    excerpt: "string"
+    cover_image: "string"
+    tags: "array<string>"
+    published_date: "timestamp"
+    author: "string"
+    status: "enum[draft|published|archived]"
+
+  CompanyMeta:
+    mission_text: "rich_text"
+    established_date: "date"
+    capital: "string"
+    address: "string"
+    contact_email: "email"
+
+  Inquiry:
+    name: "string"
+    email: "email"
+    phone: "string"
+    message: "string"
+    submitted_at: "timestamp"
+    status: "enum[new|in_progress|resolved]"
+    admin_notes: "string"
